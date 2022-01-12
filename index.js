@@ -7,6 +7,29 @@ client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}`)
 })
 
+//function definitions
+var caesarShift = function (str, amount) {
+    if (amount < 0) {
+        return caesarShift(str, amount + 26);
+    }
+    var output = "";
+    for (var i = 0; i < str.length; i++) {
+        var c = str[i];
+        if (c.match(/[a-z]/i)) {
+            var code = str.charCodeAt(i);
+            if (code >= 65 && code <= 90) {
+                c = String.fromCharCode(((code - 65 + amount) % 26) + 65);
+            }
+            else if (code >= 97 && code <= 122) {
+                c = String.fromCharCode(((code - 97 + amount) % 26) + 97);
+            }
+        }
+        output += c;
+    }
+    return output;
+}
+
+//this part checks for and responds to valid commands
 client.on('message', (msg) => {
   if (msg.author.bot) return
 
@@ -32,15 +55,8 @@ client.on('message', (msg) => {
     }
     if (command == "caesar") {
         var shift_num = parseInt(args[0], 10);
-        var enc_string = args[1].toUpperCase();
-        function rotate(input) {
-            const charCode = input.charCodeAt();
-            return String.fromCharCode(
-                ((charCode + shift_num) <= 90) ? charCode + shift_num : (charCode + shift_num) % 90 + 64
-            );
-        }
-        msg.reply(enc_string.replace(/A-Z/g, rotate))
-
+        var enc_string = args[1];
+        msg.reply(caesarShift(enc_string, shift_num));
     }
 });
 
