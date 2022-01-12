@@ -46,9 +46,6 @@ client.on('message', (msg) => {
     .trim()
     .split(' ')
 
-    if (command == "bingbong") {
-      msg.reply('F*ck ya life');
-    }
     if (command == "ping") {
       const timeTaken = Date.now() - msg.createdTimestamp;
       msg.reply(`pong. latency: ${timeTaken}ms.`);
